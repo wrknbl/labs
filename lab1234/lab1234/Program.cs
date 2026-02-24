@@ -1,52 +1,43 @@
-﻿
-namespace Lab1_Printer
+﻿namespace Lab1_Printer
 {
 	class Program
-	{
-		static void Main(string[] args)
-		{
-			Console.WriteLine("Демонстрация работы класса Printer\n");
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Демонстрация работы класса Printer\n");
+            Printer printer1 = new Printer();
+            Printer printer2 = new Printer("HP", "Laser");
+            Printer printer3 = new Printer("MS90", "Inkjet", "NoPaper");
 
-			//Конструктор по умолчанию
-			Printer printer1 = new Printer();
-			printer1.Model = "HP LaserJet";
-			printer1.PrintType = Printer.TypeLaser;
-			Console.WriteLine($"Принтер 1: {printer1.Model}, тип: {printer1.PrintType}, статус: {printer1.Status}");
+            Console.WriteLine("Созданные принтеры:");
+            Console.WriteLine(printer1);
+            Console.WriteLine(printer2);
+            Console.WriteLine(printer3);
+            Console.WriteLine();
 
-			//Конструктор с параметрами
-			Printer printer2 = new Printer("Canon Pixma", Printer.TypeInkjet);
-			Console.WriteLine($"Принтер 2: {printer2.Model}, тип: {printer2.PrintType}, статус: {printer2.Status}");
+            int totalPrintedGlobal = 0;
 
-			Console.WriteLine("\n--- Работа с принтером 2 ---");
+            Console.WriteLine("Печать на printer2 (готов)");
+            printer2.PrintDocument("Отчёт", 10, ref totalPrintedGlobal, out bool success);
+            Console.WriteLine($"Успех: {success}, Всего напечатано страниц (global): {totalPrintedGlobal}");
+            Console.WriteLine(printer2);
+            Console.WriteLine();
 
-			//Добавление документа (обычный параметр)
-			printer2.AddDocument(10);
-			printer2.AddDocument(5);
-			printer2.AddDocuments(7, 3, 2);
-			printer2.AddDocuments();
+            Console.WriteLine("Печать на printer3 (нет бумаги)");
+            printer3.PrintDocument("Фото", 5, ref totalPrintedGlobal, out success);
+            Console.WriteLine($"Успех: {success}, Всего напечатано страниц (global): {totalPrintedGlobal}");
+            Console.WriteLine(printer3);
+            Console.WriteLine();
 
-			//Использование out
-			printer2.CheckStatus(out string statusDesc);
-			Console.WriteLine($"Статус: {statusDesc}");
+            Console.WriteLine("Проверка статуса printer3");
+            string status = printer3.CheckStatus(out string description);
+            Console.WriteLine($"Статус: {status}, Описание: {description}");
+            Console.WriteLine();
 
-			//Печать документа
-			printer2.PrintDocument();
-			printer2.PrintDocument();
-
-			//Очистка очереди с ref
-			int oldQueueSize = 0;
-			printer2.ClearQueue(ref oldQueueSize);
-			Console.WriteLine($"После очистки в очереди: {printer2.PagesInQueue} стр.");
-
-			//Конструктор с заданным статусом
-			Printer printer3 = new Printer("Brother DCP-L2520DWR", Printer.TypeLaser, Printer.StatusNoPaper);
-			Console.WriteLine($"\nПринтер 3: {printer3.Model}, статус: {printer3.Status}");
-
-			//Попытка добавить документ при статусе "Нет бумаги"
-			printer3.AddDocument(15); // не должно добавиться
-			printer3.CheckStatus(out string errStatus);
-			Console.WriteLine($"Статус: {errStatus}");
-
-		}
-	}
+            Console.WriteLine("Очистка очереди printer2");
+            printer2.ClearQueue(out int cleared);
+            Console.WriteLine(printer2);
+            Console.WriteLine();
+        }
+    }
 }
