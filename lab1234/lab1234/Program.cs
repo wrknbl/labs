@@ -1,10 +1,10 @@
-﻿namespace Lab1_Printer
+﻿namespace lab1234
 {
 	class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Демонстрация работы класса Printer\n");
+            Console.WriteLine("Демонстрация работы класса Printer LAB1\n");
             Printer printer1 = new Printer();
             Printer printer2 = new Printer("HP", "Laser");
             Printer printer3 = new Printer("MS90", "Inkjet", "NoPaper");
@@ -37,6 +37,38 @@
             Console.WriteLine("Очистка очереди printer2");
             printer2.ClearQueue(out int cleared);
             Console.WriteLine(printer2);
+            Console.WriteLine();
+
+            Console.WriteLine("Демонстрация работы LAB2");
+            List<IConnectable> devices = new List<IConnectable>
+            {
+                new Printer2("HP", "Laser"),
+                new Scanner("Canon", 1200),
+                new NetworkRouter("TP-Link", "802.11ac")
+            };
+
+            Console.WriteLine("Подключение устройств");
+            foreach (var device in devices)
+            {
+                device.Connect(); 
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("Информация об устройствах");
+            foreach (var device in devices)
+            {
+                if (device is Device d)
+                {
+                    Console.WriteLine(d.GetInfo());
+                }
+            }
+
+            Console.WriteLine("Отключение устройств");
+            foreach (var device in devices)
+            {
+                device.Disconnect();
+                Console.WriteLine();
+            }
             Console.WriteLine();
         }
     }
