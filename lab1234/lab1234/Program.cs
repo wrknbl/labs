@@ -70,6 +70,42 @@
                 Console.WriteLine();
             }
             Console.WriteLine();
+
+            Console.WriteLine("Лабораторная работа №3: Обобщённый класс Network<T>\n");
+
+            // Создаём несколько устройств (из второй лабораторной)
+            Printer2 printer4 = new Printer2("HP", "Laser");
+            Printer2 printer5 = new Printer2("Canon", "Inkjet");
+            Scanner scanner1 = new Scanner("Epson", 2400);
+            NetworkRouter router1 = new NetworkRouter("TP-Link", "802.11ac");
+
+            // Создаём сеть устройств, реализующих IConnectable
+            var devices2 = new IConnectable[] { printer4, printer5, scanner1, router1 };
+            Network<IConnectable> network = new Network<IConnectable>(devices2);
+
+            // Показываем статический счётчик (должен быть 4)
+            Console.WriteLine($"Всего устройств во всех сетях: {Network<IConnectable>.TotalDevicesInAllNetworks}");
+
+            // Выводим информацию об устройствах
+            network.PrintAllDevicesInfo();
+
+            // Подключаем все устройства
+            network.ConnectAll();
+
+            // Получаем список подключённых и выводим их
+            var connected = network.GetConnectedDevices();
+            Console.WriteLine($"\nПодключённых устройств: {connected.Count}");
+            foreach (var dev in connected)
+            {
+                Console.WriteLine($" - {dev}");
+            }
+
+            // Отключаем все
+            network.DisconnectAll();
+
+            // Проверяем список подключённых после отключения
+            connected = network.GetConnectedDevices();
+            Console.WriteLine($"\nПодключённых устройств после отключения: {connected.Count}");
         }
     }
 }

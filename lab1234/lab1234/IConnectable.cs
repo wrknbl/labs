@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lab1234
 {
-    internal interface IConnectable
+    public interface IConnectable
     {
         bool IsConnected { get; }
         void Connect();
