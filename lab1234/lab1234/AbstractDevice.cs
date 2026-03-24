@@ -23,9 +23,10 @@ namespace lab1234
 
         public string Name
         {
-            get { return _name; }
-            set { _name = value ?? "Unknown"; }
+            get => _name;
+            set => _name = value ?? "Неизвестное устройство";
         }
+
         public int Id => _id;
         public bool IsConnected => _isConnected;
 
