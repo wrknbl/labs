@@ -42,7 +42,6 @@ namespace lab1234
             private set { _pageInQueue = value; }
         }
 
-		// Конструкторы
 		public Printer()
 		{
 			_model = "Unknown";
@@ -65,7 +64,6 @@ namespace lab1234
 			_pageInQueue = 0;
 		}
 
-		// Методы
 		public void PrintDocument(string documentName, int pages, ref int totalPrinted, out bool success)
 		{
 			success = false;

@@ -17,11 +17,16 @@ namespace lab1234
             _totalDevicesInAllNetworks += _devices.Count;
         }
 
+        public Network()
+        {
+            _devices = new List<T>();
+        }
+
         public static int TotalDevicesInAllNetworks => _totalDevicesInAllNetworks;
 
         public void ConnectAll()
         {
-            Console.WriteLine($"\nПодключение всех устройств в сети (всего {_devices.Count})");
+            Console.WriteLine($"\n--- Подключение всех устройств в сети (всего {_devices.Count}) ---");
             foreach (var device in _devices)
             {
                 if (!device.IsConnected)
@@ -33,7 +38,7 @@ namespace lab1234
 
         public void DisconnectAll()
         {
-            Console.WriteLine($"\nОтключение всех устройств в сети");
+            Console.WriteLine($"\n--- Отключение всех устройств в сети ---");
             foreach (var device in _devices)
             {
                 if (device.IsConnected)
@@ -50,11 +55,45 @@ namespace lab1234
 
         public void PrintAllDevicesInfo()
         {
-            Console.WriteLine($"\nИнформация об устройствах в сети (всего {_devices.Count})");
+            Console.WriteLine($"\n--- Информация об устройствах в сети (всего {_devices.Count}) ---");
             foreach (var device in _devices)
             {
                 Console.WriteLine(device is Device d ? d.GetInfo() : device.ToString());
             }
+        }
+
+        public Network<T> AddDevice(T device)
+        {
+            var newList = new List<T>(_devices) { device };
+            return new Network<T>(newList);
+        }
+
+        public Network<T> RemoveDevice(T device)
+        {
+            var newList = new List<T>(_devices);
+            newList.Remove(device);
+            return new Network<T>(newList);
+        }
+
+        public Network<T> Intersect(Network<T> other)
+        {
+            var common = _devices.Intersect(other._devices).ToList();
+            return new Network<T>(common);
+        }
+
+        public static Network<T> operator +(Network<T> network, T device)
+        {
+            return network.AddDevice(device);
+        }
+
+        public static Network<T> operator -(Network<T> network, T device)
+        {
+            return network.RemoveDevice(device);
+        }
+
+        public static Network<T> operator &(Network<T> a, Network<T> b)
+        {
+            return a.Intersect(b);
         }
     }
 }

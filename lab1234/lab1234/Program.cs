@@ -101,6 +101,48 @@
 
             connected = network.GetConnectedDevices();
             Console.WriteLine($"\nПодключённых устройств после отключения: {connected.Count}");
+
+            //lab4 nachalo
+            Console.WriteLine("\nДемонстрация работы LAB4\n");
+
+            Printer2 printer6 = new Printer2("HP", "Лазерный");
+            Printer2 printer7 = new Printer2("Canon", "Струйный");
+            Scanner scanner2 = new Scanner("Epson Perfection", 2400);
+            NetworkRouter router2 = new NetworkRouter("TP-Link Archer", "802.11ac");
+
+            var initialDevices = new IConnectable[] { printer6, scanner2 };
+            Network<IConnectable> network2 = new Network<IConnectable>(initialDevices);
+            network2.PrintAllDevicesInfo();
+
+            Console.WriteLine("\n--- Добавляем маршрутизатор в сеть через оператор + ---");
+            Network<IConnectable> networkWithRouter = network2 + router2;
+            networkWithRouter.PrintAllDevicesInfo();
+
+            Console.WriteLine("\n--- Удаляем принтер из сети через оператор - ---");
+            Network<IConnectable> networkWithoutPrinter = networkWithRouter - printer6;
+            networkWithoutPrinter.PrintAllDevicesInfo();
+
+            Network<IConnectable> anotherNetwork = new Network<IConnectable>(new IConnectable[] { printer6, router2 });
+            Console.WriteLine("\n--- Вторая сеть ---");
+            anotherNetwork.PrintAllDevicesInfo();
+
+            Console.WriteLine("\n--- Пересечение двух сетей (оператор &) ---");
+            Network<IConnectable> intersection = networkWithRouter & anotherNetwork;
+            intersection.PrintAllDevicesInfo();
+
+            Console.WriteLine("\n--- Метод расширения ToggleConnection ---");
+            Console.WriteLine($"Принтер1 подключён? {printer7.IsConnected}");
+            printer7.ToggleConnection();
+            Console.WriteLine($"Принтер1 подключён? {printer7.IsConnected}");
+            printer7.ToggleConnection(); 
+            Console.WriteLine($"Принтер1 подключён? {printer7.IsConnected}");
+
+            Console.WriteLine("\n--- Оригинальная сеть (не изменилась) ---");
+            network.PrintAllDevicesInfo();
+
+            Console.WriteLine("\nНажмите любую клавишу для завершения...");
+            Console.ReadKey();
         }
+
     }
 }
